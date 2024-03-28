@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240304160508 extends AbstractMigration
+final class Version20240328112135 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,6 +25,8 @@ final class Version20240304160508 extends AbstractMigration
         $this->addSql('CREATE TABLE motive (motive VARCHAR(50) NOT NULL, PRIMARY KEY(motive)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE offer (id INT AUTO_INCREMENT NOT NULL, motive VARCHAR(50) DEFAULT NULL, type VARCHAR(50) DEFAULT NULL, location VARCHAR(50) DEFAULT NULL, status VARCHAR(50) DEFAULT NULL, title VARCHAR(255) NOT NULL, description LONGTEXT NOT NULL, author VARCHAR(255) NOT NULL, created_at DATE NOT NULL, file_name VARCHAR(255) DEFAULT NULL, INDEX IDX_29D6873EF92CD178 (motive), INDEX IDX_29D6873E8CDE5729 (type), INDEX IDX_29D6873E5E9E89CB (location), INDEX IDX_29D6873E7B00651C (status), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE offer_skills (id INT NOT NULL, skill VARCHAR(255) NOT NULL, INDEX IDX_C6461D1BF396750 (id), INDEX IDX_C6461D15E3DE477 (skill), PRIMARY KEY(id, skill)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE projet (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, titre VARCHAR(255) NOT NULL, competences VARCHAR(255) NOT NULL, budget NUMERIC(5, 2) NOT NULL, date_deb DATE NOT NULL, date_fin DATE NOT NULL, proprietaire VARCHAR(255) NOT NULL, INDEX IDX_50159CA9A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE proposition (id INT AUTO_INCREMENT NOT NULL, id_projet_id INT NOT NULL, user_id INT DEFAULT NULL, description VARCHAR(255) NOT NULL, prop_budget DOUBLE PRECISION NOT NULL, prop_delai DATE NOT NULL, INDEX IDX_C7CDC35380F43E55 (id_projet_id), INDEX IDX_C7CDC353A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reclamation (idrec INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, content VARCHAR(255) NOT NULL, INDEX IDX_CE606404A76ED395 (user_id), PRIMARY KEY(idrec)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE recrutement (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, date DATE NOT NULL, statut VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reponse (idrep INT AUTO_INCREMENT NOT NULL, reclamation_id INT NOT NULL, subject VARCHAR(255) NOT NULL, message LONGTEXT NOT NULL, created_at DATETIME NOT NULL, INDEX IDX_5FB6DEC72D6BA2D9 (reclamation_id), PRIMARY KEY(idrep)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -41,6 +43,9 @@ final class Version20240304160508 extends AbstractMigration
         $this->addSql('ALTER TABLE offer ADD CONSTRAINT FK_29D6873E7B00651C FOREIGN KEY (status) REFERENCES status (status)');
         $this->addSql('ALTER TABLE offer_skills ADD CONSTRAINT FK_C6461D1BF396750 FOREIGN KEY (id) REFERENCES offer (id)');
         $this->addSql('ALTER TABLE offer_skills ADD CONSTRAINT FK_C6461D15E3DE477 FOREIGN KEY (skill) REFERENCES skill (skill)');
+        $this->addSql('ALTER TABLE projet ADD CONSTRAINT FK_50159CA9A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE proposition ADD CONSTRAINT FK_C7CDC35380F43E55 FOREIGN KEY (id_projet_id) REFERENCES projet (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE proposition ADD CONSTRAINT FK_C7CDC353A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE reclamation ADD CONSTRAINT FK_CE606404A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE reponse ADD CONSTRAINT FK_5FB6DEC72D6BA2D9 FOREIGN KEY (reclamation_id) REFERENCES reclamation (idrec)');
         $this->addSql('ALTER TABLE reset_password_request ADD CONSTRAINT FK_7CE748AA76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE');
@@ -56,6 +61,9 @@ final class Version20240304160508 extends AbstractMigration
         $this->addSql('ALTER TABLE offer DROP FOREIGN KEY FK_29D6873E7B00651C');
         $this->addSql('ALTER TABLE offer_skills DROP FOREIGN KEY FK_C6461D1BF396750');
         $this->addSql('ALTER TABLE offer_skills DROP FOREIGN KEY FK_C6461D15E3DE477');
+        $this->addSql('ALTER TABLE projet DROP FOREIGN KEY FK_50159CA9A76ED395');
+        $this->addSql('ALTER TABLE proposition DROP FOREIGN KEY FK_C7CDC35380F43E55');
+        $this->addSql('ALTER TABLE proposition DROP FOREIGN KEY FK_C7CDC353A76ED395');
         $this->addSql('ALTER TABLE reclamation DROP FOREIGN KEY FK_CE606404A76ED395');
         $this->addSql('ALTER TABLE reponse DROP FOREIGN KEY FK_5FB6DEC72D6BA2D9');
         $this->addSql('ALTER TABLE reset_password_request DROP FOREIGN KEY FK_7CE748AA76ED395');
@@ -64,6 +72,8 @@ final class Version20240304160508 extends AbstractMigration
         $this->addSql('DROP TABLE motive');
         $this->addSql('DROP TABLE offer');
         $this->addSql('DROP TABLE offer_skills');
+        $this->addSql('DROP TABLE projet');
+        $this->addSql('DROP TABLE proposition');
         $this->addSql('DROP TABLE reclamation');
         $this->addSql('DROP TABLE recrutement');
         $this->addSql('DROP TABLE reponse');
