@@ -20,9 +20,9 @@ class TestController extends AbstractController
             // Create an email message
             $email = (new Email())
                 ->from('sarah.henia@esprit.tn')
-                ->to('sarah.henia@gmail.tn')
-                ->subject('Apply Offer')
-                ->text('I want to Apply to SkillSeekr offer aaaaaaaaaaa');
+                ->to('sarah.hania15@gmail.tn')
+                ->subject('Offer Apply')
+                ->text('I want to Apply to SkillSeekr offer');
             // Send the email
             $mailer->send($email);
     
